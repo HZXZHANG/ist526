@@ -1,0 +1,80 @@
+{
+  "vconcat": [
+    {
+      "data": {"url": "data/cars.json"},
+      "width": 1000,
+      "height": 350,
+      "layer": [
+        {
+          "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
+          "mark": {
+            "type": "circle",
+            "tooltip": {"content": "data"},
+            "size": 80
+          },
+          "encoding": {
+            "y": {"field": "Horsepower", "type": "quantitative"},
+            "x": {
+              "field": "Miles_per_Gallon",
+              "type": "quantitative",
+              "sort": {
+                "field": "Miles_per_Gallon",
+                "order": "descending",
+                "op": "mean"
+              }
+            },
+            "color": {
+              "condition": {
+                "value": "#F2830D",
+                "test": "datum.Acceleration < 12"
+              }
+            }
+          },
+          "transform": [{"filter": {"field": "Cylinders", "gt": 4}}]
+        },
+        {
+          "mark": {"type": "rule", "tooltip": true},
+          "encoding": {
+            "y": {
+              "field": "Horsepower",
+              "type": "quantitative",
+              "aggregate": "mean"
+            },
+            "color": {"value": "red"},
+            "size": {"value": 2}
+          }
+        },
+        {
+          "mark": {"type": "rule", "tooltip": true},
+          "encoding": {
+            "x": {
+              "field": "Miles_per_Gallon",
+              "type": "quantitative",
+              "aggregate": "mean"
+            },
+            "color": {"value": "red"},
+            "size": {"value": 2}
+          }
+        }
+      ]
+    },
+    {
+      "data": {"url": "data/cars.json"},
+      "width": 1000,
+      "height": 350,
+      "mark": {"type": "bar", "size": 80},
+      "encoding": {
+        "x": {"field": "Origin", "type": "ordinal"},
+        "y": {"field": "mean_acc", "type": "quantitative"}
+      },
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "mean", "field": "Acceleration", "as": "mean_acc"}
+          ],
+          "groupby": ["Origin"]
+        }
+      ]
+    }
+  ]
+}
